@@ -1,47 +1,61 @@
-import React from "react";
+import React, { forwardRef, useEffect, useState } from "react";
 import {
+    Button,
     createStyles,
     makeStyles,
 } from "@material-ui/core";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {INPUTS} from "../../consts";
 import ToggleInput from "../inputs/ToggleInput";
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles(() =>
     createStyles({
-        root: {
-            width: '100%',
+        inputsContainer: {
             height: '100%',
             display: 'flex',
             flexWrap: 'wrap',
             alignItems: 'center',
             justifyContent: 'space-around'
         },
+        root: {
+            // margin: '10px'
+        }
     }),
 );
 
-const DashboardContainer = (props) => {
+const DashboardContainer = forwardRef((props, ref) => {
     const classes = useStyles();
-    // const dispatch = useDispatch();
     const inputsDisplay = useSelector((state) => state.inputs.display);
+    const [refObj, setRefObj] = useState(null)
 
+    useEffect(() => {
+        console.log({ref});
+        console.log(ref?.current?.currentSrc);
+        setRefObj(ref);
+    }, [ref])
 
     return (
         <div className={classes.root}>
-            {
-                Object.values(INPUTS).map(input => {
-                    const isDisplayedInput = inputsDisplay[input.name];
-                    return isDisplayedInput && <ToggleInput key={input.name}
-                                        className={'inputTag'}
-                                        toggleIcon={ input.icon }
-                                        selected={ isDisplayedInput }
-                                        caption={input.caption}
-                                        onChange={() => {}}
-                    />
-                })
-            }
+            <div className={classes.inputsContainer}>
+                {
+                    Object.values(INPUTS).map(input => {
+                        const isDisplayedInput = inputsDisplay[input.name];
+                        return isDisplayedInput && <ToggleInput key={input.name}
+                                            className={'inputTag'}
+                                            toggleIcon={ input.icon }
+                                            selected={ isDisplayedInput }
+                                            caption={input.caption}
+                                            onChange={() => {}}
+                        />
+                    })
+                }
+            </div>
+            <Button onClick={() => ref.current.play()}>play</Button>
+
+            {ref?.current?.currentSrc}
+
         </div>
     )
-}
+})
 
 export default DashboardContainer;

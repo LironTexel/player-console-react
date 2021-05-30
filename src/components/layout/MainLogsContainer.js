@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, createRef} from "react";
 import {
     Button,
     createStyles,
@@ -9,16 +9,16 @@ import {clearLogs, setBindActive, toggleAllBinds} from '../../store/eventsSlice'
 import { EVENTS_BINDING, LOGS_TITLE_HEIGHT } from "../../consts";
 import CheckboxInput from "../inputs/CheckboxInput";
 import DeleteIcon from '@material-ui/icons/Delete';
-import {Colors} from "../../styles/colors";
 import LibraryAddCheckIcon from '@material-ui/icons/LibraryAddCheck';
 import FilterNoneOutlinedIcon from '@material-ui/icons/FilterNoneOutlined';
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles(() =>
     createStyles({
         root: {
             width: '100%',
             height: '100%',
-
+            display: 'flex',
+            flexDirection: 'column'
         },
         bindsContainer: {
             height: '55%',
@@ -87,12 +87,12 @@ const useStyles = makeStyles((theme) =>
     }),
 );
 
-const Toolbar = (props) => {
+const Toolbar = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const eventsDisplay = useSelector((state) => state.events.binds);
     const logs = useSelector((state) => state.events.logs);
-    const logsEndRef = React.createRef();
+    const logsEndRef = createRef();
     const [isSelectAll, setIsSelectAll] = useState(false);
 
     useEffect(() => {
