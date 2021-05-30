@@ -8,8 +8,9 @@ import {EVENTS_BINDING } from "../../consts";
 import englishSubtitles from "../../assets/subtitles/english.vtt"
 import frenchSubtitles from "../../assets/subtitles/french.vtt"
 import {logNewEvent} from "../../store/eventsSlice";
+import {updateStatus} from "../../store/inputsSlice";
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles(() =>
     createStyles({
         root: {
             width: '100%',
@@ -21,14 +22,18 @@ const useStyles = makeStyles((theme) =>
     }),
 );
 
-const VideoContainer = (props) => {
+const VideoContainer = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const binds = useSelector((state) => state.events.binds);
     const videoRef = React.createRef();
 
     const createEventCallback = ({name, color, dataPath}) => {
-        return binds[name] ? (() => handleLog({name, color, dataPath})) : undefined;
+        return binds[name] ? (() => {
+                handleLog({name, color, dataPath})
+                updateStatus({name, data: videoRef.current[dataPath]})
+            })
+        : undefined;
     }
 
     const handleLog = ({name, color, dataPath}) => {

@@ -9,7 +9,7 @@ import {
     Typography,
 } from "@material-ui/core";
 import {useDispatch, useSelector} from "react-redux";
-import { setInputDisplay } from '../../store/inputsSlice'
+import {setBulkInputDisplay, setInputDisplay} from '../../store/inputsSlice'
 import ToggleInput from "../inputs/ToggleInput";
 import { INPUTS } from "../../consts";
 import TuneIcon from '@material-ui/icons/Tune';
@@ -24,6 +24,9 @@ const useStyles = makeStyles((theme) =>
             justifyContent: 'flex-end',
         },
         dialogTitle: {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between'
         },
         dialogContent: {
             width: '600px',
@@ -39,14 +42,20 @@ const useStyles = makeStyles((theme) =>
     }),
 );
 
-const Toolbar = (props) => {
+const Toolbar = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const inputsDisplay = useSelector((state) => state.inputs.display);
+    const [selectAll, setSelectAll] = useState(false);
 
     const [open, setOpen] = useState(false);
     const handleClose = () => setOpen(false);
     const handleOpen = () => setOpen(true);
+
+    const handleSelectAll = (isSelectAll) => {
+        dispatch(setBulkInputDisplay(isSelectAll));
+        setSelectAll(!selectAll);
+    }
 
     return (
         <div className={classes.root}>
@@ -62,6 +71,9 @@ const Toolbar = (props) => {
                 <DialogTitle id="scroll-dialog-title">
                     <div className={classes.dialogTitle}>
                         <Typography>Set visible inputs</Typography>
+                        <Button onClick={() => handleSelectAll(selectAll)}>
+                            {selectAll ? 'Select All' : 'Deselect All'}
+                        </Button>
                     </div>
                 </DialogTitle>
                 <DialogContent dividers className={classes.dialogContent}>

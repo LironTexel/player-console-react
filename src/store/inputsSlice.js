@@ -59,14 +59,23 @@ export const inputsSlice = createSlice({
             const { inputName, value } = payload;
             state.display[inputName] = value;
         },
+        setBulkInputDisplay: (state, { payload }) => {
+            for (const input in state.display) {
+                if (state.display.hasOwnProperty(input)) {
+                    state.display[input] = payload;
+                }
+            }
+        },
         updateStatus: (state, { payload }) => {
-            const { inputName, value } = payload;
-            state.status[inputName] = value;
+            const { inputName, data } = payload;
+            if (state.status || state.status === null) {
+                state.status[inputName] = data;
+            }
         }
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { setInputDisplay } = inputsSlice.actions
+export const { setInputDisplay, setBulkInputDisplay, updateStatus } = inputsSlice.actions
 
 export default inputsSlice.reducer
