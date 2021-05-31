@@ -21,87 +21,144 @@ import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import PauseIcon from '@material-ui/icons/Pause';
 import {Colors} from "./styles/colors";
 
+export const TOOLBAR_HEIGHT = 40;
+export const LOGS_TITLE_HEIGHT = 30;
+export const DEFAULT_VIDEO_HEIGHT = 300;
+export const DEFAULT_VIDEO_WIDTH = 530;
+export const DEFAULT_POSTER = 'https://www.shortlist.com/media/imager/201905/24024-posts.article_md.jpg';
+
+export const NETWORK_STATE_CODES = {
+    0: 'NETWORK_EMPTY',
+    1: 'NETWORK_IDLE',
+    2: 'NETWORK_LOADING',
+    3: 'NETWORK_NO_SOURCE',
+}
+
+export const READY_STATE_CODES = {
+    0: 'HAVE_NOTHING',
+    1: 'HAVE_METADATA',
+    2: 'HAVE_CURRENT_DATA',
+    3: 'HAVE_FUTURE_DATA',
+    4: 'HAVE_ENOUGH_DATA',
+}
 
 export const INPUTS = {
     PLAY: {
         name: 'play',
         caption: 'Play',
-        icon: <PlayArrowIcon/>
+        icon: <PlayArrowIcon/>,
+        action: (ref) => () => ref.current.play()
     },
     PAUSE: {
         name: 'pause',
         caption: 'Pause',
-        icon: <PauseIcon/>
+        icon: <PauseIcon/>,
+        action: (ref) => () => ref.current.pause()
+
     },
     AUTOPLAY: {
         name: 'autoplay',
         caption: 'Autoplay',
-        icon: <PlayCircleFilledIcon/>
+        defaultValue: false,
+        icon: <PlayCircleFilledIcon/>,
+        action: (ref) => () => ref.current.autoplay = !ref.current.autoplay
     },
     LOOP: {
         name: 'loop',
         caption: 'Loop',
-        icon: <LoopIcon/>
+        icon: <LoopIcon/>,
+        action: (ref) => () => ref.current.loop = !ref.current.loop
     },
     MUTED: {
         name: 'muted',
         caption: 'Muted',
-        icon: <VolumeOffIcon/>
+        icon: <VolumeOffIcon/>,
+        action: (ref) => () => ref.current.muted = !ref.current.muted
     },
     POSTER: {
         name: 'poster',
         caption: 'Poster',
-        icon: <ImageIcon/>
+        defaultValue: DEFAULT_POSTER,
+        icon: <ImageIcon/>,
+        action: (ref) => (poster) => {
+            console.log({poster})
+            ref.current.poster = poster
+        }
     },
     SRC: {
         name: 'src',
         caption: 'Src',
-        icon: <CodeIcon/>
+        defaultValue: '',
+        icon: <CodeIcon/>,
+        action: (ref) => (src) => {
+            ref.current.src = src;
+            ref.current.load();
+        }
     },
     PRELOAD: {
         name: 'preload',
         caption: 'Preload',
-        icon: <GetAppIcon/>
+        defaultValue: 'none',
+        icon: <GetAppIcon/>,
+        action: (ref) => (preload) => ref.current.preload = preload
     },
     VOLUME: {
         name: 'volume',
         caption: 'Volume',
-        icon: <VolumeUpIcon/>
+        defaultValue: 1,
+        icon: <VolumeUpIcon/>,
+        action: (ref) => (volume) => {
+            console.log(volume)
+            ref.current.volume = volume
+        }
     },
     WIDTH: {
         name: 'width',
         caption: 'Width',
-        icon: <HeightIcon style={{'transform': 'rotate(90deg)'}}/>
+        icon: <HeightIcon style={{'transform': 'rotate(90deg)'}}/>,
+        action: (ref) => (width) => ref.current.width = width
     },
     HEIGHT: {
         name: 'height',
         caption: 'Height',
-        icon: <HeightIcon/>
+        icon: <HeightIcon/>,
+        action: (ref) => (height) => ref.current.height = height
     },
     CURRENT_TIME: {
         name: 'currentTime',
         caption: 'Current time',
-        icon: <ScheduleIcon/>
+        defaultValue: 0,
+        icon: <ScheduleIcon/>,
+        action: (ref) => (currentTime) => ref.current.currentTime = currentTime
     },
     PLAYBACK_RATE: {
         name: 'playbackRate',
         caption: 'Playback rate',
-        icon: <SlowMotionVideoIcon/>
+        defaultValue: 1,
+        icon: <SlowMotionVideoIcon/>,
+        action: (ref) => (playbackRate) => ref.current.playbackRate = playbackRate
     },
     PICTURE_IN_PICTURE: {
         name: 'pictureInPicture',
         caption: 'Picture in picture',
-        icon: <PictureInPictureAltIcon/>
+        icon: <PictureInPictureAltIcon/>,
+        action: (ref) => (checked) => checked && document.pictureInPictureEnabled ?
+            ref.current.requestPictureInPicture() : document.exitPictureInPicture()
     },
     FULL_SCREEN: {
         name: 'fullScreen',
         caption: 'Full screen',
-        icon: <FullscreenIcon/>
+        defaultValue: false,
+        icon: <FullscreenIcon/>,
+        action: (ref) => (checked) => checked && document.fullscreenEnabled ?
+            ref.current.requestFullscreen() : document.exitFullscreen()
     },
     CONTROLS: {
         name: 'controls',
         caption: 'Controls',
-        icon: <ControlCameraIcon/>
+        defaultValue: true,
+        icon: <ControlCameraIcon/>,
+        action: (ref) => (checked) => ref.current.controls = checked
     },
     // read only inputs
     DURATION: {
@@ -117,11 +174,13 @@ export const INPUTS = {
     READY_STATE: {
         name: 'readyState',
         caption: 'Ready state',
+        defaultValue: '',
         icon: <HourglassEmptyIcon/>
     },
     NETWORK_STATE: {
         name: 'networkState',
         caption: 'Network state',
+        defaultValue: '',
         icon: <NetworkCheckIcon/>
     },
     TEXT_TRACKS: {
@@ -153,7 +212,7 @@ export const EVENTS_BINDING = {
     },
     RATE_CHANGE: {
         name: 'ratechange',
-        dataPath: ''
+        dataPath: 'playbackRate'
     },
     ABORT: {
         name: 'abort',
@@ -221,7 +280,7 @@ export const EVENTS_BINDING = {
     },
     VOLUME_CHANGE: {
         name: 'volumechange',
-        dataPath: ''
+        dataPath: 'volume'
     },
     WAITING: {
         name: 'waiting',
@@ -244,8 +303,3 @@ export const EVENTS_BINDING = {
         dataPath: ''
     }
 }
-
-export const TOOLBAR_HEIGHT = 40;
-export const LOGS_TITLE_HEIGHT = 30;
-export const DEFAULT_VIDEO_HEIGHT = 300;
-export const DEFAULT_VIDEO_WIDTH = 600;

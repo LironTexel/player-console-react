@@ -2,7 +2,7 @@ import React from "react";
 import {Typography} from "@material-ui/core";
 import {ToggleButton} from "@material-ui/lab";
 
-const ToggleInput = ({ selected, onChange, caption, toggleIcon, className }) => {
+const DisplayInput = ({ selected, onChange, caption, toggleIcon, className }) => {
 
     return (
         <ToggleButton
@@ -17,4 +17,4 @@ const ToggleInput = ({ selected, onChange, caption, toggleIcon, className }) => 
     )
 }
 
-export default ToggleInput;
+export default DisplayInput;

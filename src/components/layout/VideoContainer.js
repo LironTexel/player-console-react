@@ -48,7 +48,8 @@ const useStyles = makeStyles(() =>
             justifyContent: 'space-around'
         },
         dashboardContainer: {
-            padding: '10px'
+            padding: '10px',
+            background: '#f1f1f1',
         }
     }),
 );
@@ -104,9 +105,15 @@ const VideoContainer = () => {
                        onVolumeChange={createEventCallback(EVENTS_BINDING.VOLUME_CHANGE)}
                        onWaiting={createEventCallback(EVENTS_BINDING.WAITING)}
                 >
-                    <source src="https://archive.org/download/ElephantsDream/ed_1024_512kb.mp4" type="video/mp4"/>
-                    <source src="https://archive.org/download/ElephantsDream/ed_hd.ogv" type="video/ogg"/>
-                    <source src="https://archive.org/download/ElephantsDream/ed_hd.avi" type="video/avi"/>
+
+                    <source src="http://techslides.com/demos/sample-videos/small.webm" type="video/webm"/>
+                    <source src="http://techslides.com/demos/sample-videos/small.ogv" type="video/ogg"/>
+                    <source src="http://techslides.com/demos/sample-videos/small.mp4" type="video/mp4"/>
+                    <source src="http://techslides.com/demos/sample-videos/small.3gp" type="video/3gp"/>
+
+                    {/*<source src="https://archive.org/download/ElephantsDream/ed_1024_512kb.mp4" type="video/mp4"/>*/}
+                    {/*<source src="https://archive.org/download/ElephantsDream/ed_hd.ogv" type="video/ogg"/>*/}
+                    {/*<source src="https://archive.org/download/ElephantsDream/ed_hd.avi" type="video/avi"/>*/}
                     <track kind="subtitles" label="english subtitles" src={englishSubtitles} srcLang="en"/>
                     <track kind="subtitles" label="french subtitles" src={frenchSubtitles} srcLang="fr"/>
                         Your browser doesn't support HTML5 video tag.

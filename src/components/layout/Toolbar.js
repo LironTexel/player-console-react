@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import {useDispatch, useSelector} from "react-redux";
 import {setBulkInputDisplay, setInputDisplay} from '../../store/inputsSlice'
-import ToggleInput from "../inputs/ToggleInput";
+import DisplayInput from "../inputs/DisplayInput";
 import { INPUTS } from "../../consts";
 import TuneIcon from '@material-ui/icons/Tune';
 
@@ -80,13 +80,13 @@ const Toolbar = () => {
                     {
                         Object.values(INPUTS).map(input => {
                             const isDisplayedInput = inputsDisplay[input.name];
-                            return <ToggleInput key={input.name}
-                                         className={'inputTag'}
-                                         toggleIcon={ input.icon }
-                                         selected={ isDisplayedInput }
-                                         caption={input.caption}
-                                         onChange={() => { dispatch(setInputDisplay({ inputName: input.name, value: !isDisplayedInput}))}}>
-                            </ToggleInput>
+                            return <DisplayInput key={input.name}
+                                                 className={'inputTag'}
+                                                 toggleIcon={ input.icon }
+                                                 selected={ isDisplayedInput }
+                                                 caption={input.caption}
+                                                 onChange={() => { dispatch(setInputDisplay({ inputName: input.name, value: !isDisplayedInput}))}}>
+                            </DisplayInput>
                         })
                     }
                 </DialogContent>

@@ -21,6 +21,7 @@ const useStyles = makeStyles(() =>
         videoContainer: {
             overflow: 'auto',
             margin: '10px 10px 10px 0',
+            width: '100%'
         },
         logsContainer: {
             width: '350px'
