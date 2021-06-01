@@ -1,96 +1,41 @@
-import React, {useState} from "react";
+import React from "react";
 import {
-    Button,
     createStyles,
-    Dialog,
-    DialogContent,
-    DialogTitle,
-    makeStyles,
-    Typography,
+    makeStyles, Typography,
 } from "@material-ui/core";
-import {useDispatch, useSelector} from "react-redux";
-import {setBulkInputDisplay, setInputDisplay} from '../../store/inputsSlice'
-import DisplayInput from "../inputs/DisplayInput";
-import { INPUTS } from "../../consts";
-import TuneIcon from '@material-ui/icons/Tune';
+import InputsDisplaySetting from "./toolbarComponents/InputsDisplaySetting";
+import VideoSelectDropdown from "./toolbarComponents/VideoSelectDropdown";
 
-const useStyles = makeStyles((theme) =>
+const useStyles = makeStyles(() =>
     createStyles({
         root: {
             display: 'flex',
             width: '100%',
             height: '40px',
             background: 'gray',
-            justifyContent: 'flex-end',
-        },
-        dialogTitle: {
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between'
-        },
-        dialogContent: {
-            width: '600px',
-            display: 'flex',
             justifyContent: 'space-between',
-            flexWrap: 'wrap',
-            '& > .inputTag': {
-                width: `calc(33% - ${theme.spacing(1.5)}px)`,
-                // width: '150px',
-                marginBottom: theme.spacing(1.5)
-            }
+            alignItems: 'center'
         },
+        title: {
+            padding: '20px',
+            color: 'white'
+        },
+        settings: {
+            display: 'flex',
+        }
     }),
 );
 
 const Toolbar = () => {
     const classes = useStyles();
-    const dispatch = useDispatch();
-    const inputsDisplay = useSelector((state) => state.inputs.display);
-    const [selectAll, setSelectAll] = useState(false);
-
-    const [open, setOpen] = useState(false);
-    const handleClose = () => setOpen(false);
-    const handleOpen = () => setOpen(true);
-
-    const handleSelectAll = (isSelectAll) => {
-        dispatch(setBulkInputDisplay(isSelectAll));
-        setSelectAll(!selectAll);
-    }
 
     return (
         <div className={classes.root}>
-            <Button onClick={handleOpen} className={classes.settingsButton}><TuneIcon/></Button>
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                className={classes.dialog}
-                scroll="paper"
-                aria-labelledby="scroll-dialog-title"
-                aria-describedby="scroll-dialog-description"
-            >
-                <DialogTitle id="scroll-dialog-title">
-                    <div className={classes.dialogTitle}>
-                        <Typography>Set visible inputs</Typography>
-                        <Button onClick={() => handleSelectAll(selectAll)}>
-                            {selectAll ? 'Select All' : 'Deselect All'}
-                        </Button>
-                    </div>
-                </DialogTitle>
-                <DialogContent dividers className={classes.dialogContent}>
-                    {
-                        Object.values(INPUTS).map(input => {
-                            const isDisplayedInput = inputsDisplay[input.name];
-                            return <DisplayInput key={input.name}
-                                                 className={'inputTag'}
-                                                 toggleIcon={ input.icon }
-                                                 selected={ isDisplayedInput }
-                                                 caption={input.caption}
-                                                 onChange={() => { dispatch(setInputDisplay({ inputName: input.name, value: !isDisplayedInput}))}}>
-                            </DisplayInput>
-                        })
-                    }
-                </DialogContent>
-            </Dialog>
+            <Typography className={classes.title} variant={"h5"}>Player console</Typography>
+            <div className={classes.settings}>
+                <VideoSelectDropdown/>
+                <InputsDisplaySetting/>
+            </div>
         </div>
     )
 }

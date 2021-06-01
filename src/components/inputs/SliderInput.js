@@ -28,6 +28,7 @@ const SliderInput = ({ value, onChange, caption, leftIcon, rightIcon, minValue, 
                             min={minValue}
                             max={maxValue}
                             step={step}
+                            color="secondary"
                             valueLabelDisplay="auto"
                             disabled={disabled}
                             onChange={onChange} />

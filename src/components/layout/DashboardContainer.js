@@ -76,7 +76,7 @@ const DashboardContainer = forwardRef((props, ref) => {
             arr[i].label = tracksData[i].label;
             arr[i].language = tracksData[i].language;
         }
-        return arr.map(track => <div>{track.kind}, "{track.label}", {track.language}</div>);
+        return arr.map((track, index) => <div key={index}>{track.kind}, "{track.label}", {track.language}</div>);
     }
 
     useEffect(() => {
@@ -297,6 +297,13 @@ const DashboardContainer = forwardRef((props, ref) => {
                         </ReadOnlyInput>
                     </DashboardInput>
                 }
+                { inputsDisplay[INPUTS.DURATION.name] &&
+                    <DashboardInput icon={INPUTS.DURATION.icon} className={classes.input}>
+                        <ReadOnlyInput caption={INPUTS.DURATION.caption}>
+                            {ref?.current?.duration || 'N/A'}
+                        </ReadOnlyInput>
+                    </DashboardInput>
+                }
                 { inputsDisplay[INPUTS.TEXT_TRACKS.name] &&
                     <DashboardInput icon={INPUTS.TEXT_TRACKS.icon} className={clsx(classes.input, 'wide')}>
                         <ReadOnlyInput caption={INPUTS.TEXT_TRACKS.caption}>
@@ -305,7 +312,7 @@ const DashboardContainer = forwardRef((props, ref) => {
                     </DashboardInput>
                 }
                 { inputsDisplay[INPUTS.PLAYBACK_QUALITY.name] &&
-                    <DashboardInput icon={INPUTS.PLAYBACK_QUALITY.icon} className={clsx(classes.input, 'wide')}>
+                    <DashboardInput icon={INPUTS.PLAYBACK_QUALITY.icon} className={classes.input}>
                         <ReadOnlyInput caption={INPUTS.PLAYBACK_QUALITY.caption}>
                             <div>Total frames: <span>{ref?.current?.getVideoPlaybackQuality().totalVideoFrames}</span></div>
                             <div>Dropped frames: <span>{ref?.current?.getVideoPlaybackQuality().droppedVideoFrames}</span></div>
